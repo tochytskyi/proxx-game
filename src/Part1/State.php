@@ -11,15 +11,18 @@ use OutOfRangeException;
  * Class that represents game's state:
  *
  * - board: 2-dimensional array where each value is instance if Cell class. @see Cell
- *   Cell class is convenient to represent each cell state and quickly get any item by O(1)
+ *   Cell class is convenient to represent each cell state and quickly get any item by O(1).
+ *   Board is immutable.
  *
  * - width & height: represent size of the board
  *
  * - withBlackHolesCoordinates: auxiliary lightweight array where keys templated like "x:y"
- *   to quickly track all cells with black holes by O(1) if we know X and Y
+ *   to quickly track all cells with black holes by O(1) if we know X and Y.
+ *   Used to easily check if a cell has black hole and do not use extra Cell instances initializations.
+ *   It also helps easily check if game is finished by comparing to openedCoordinates property
  *
  * - openedCoordinates: auxiliary lightweight array to quickly track all opened cells by O(1).
- *   can be used to check if the game is finished
+ *   Used to easily check if the game is finished by comparing to withBlackHolesCoordinates property
  */
 class State {
 
@@ -128,7 +131,7 @@ class State {
 
     public function isFinished(): bool
     {
-        return count($this->openedCoordinates)=== ($this->width * $this->height - count($this->withBlackHolesCoordinates));
+        return count($this->openedCoordinates) === ($this->width * $this->height - count($this->withBlackHolesCoordinates));
     }
 
     private function checkWidth(int $value): void

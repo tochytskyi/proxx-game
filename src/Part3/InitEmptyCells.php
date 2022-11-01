@@ -7,6 +7,10 @@ namespace Proxx\Part3;
 use Proxx\Part1\Cell;
 use Proxx\Part1\State;
 
+/**
+ * To update a cell with adjacent black holes count we use iterations for each one
+ * where all adjacent cells will be checked one by one.
+ */
 class InitEmptyCells {
 
     private State $state;

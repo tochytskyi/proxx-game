@@ -21,9 +21,9 @@ class Cell {
     private int $adjacentBlackHolesCount = 0;
 
     /**
-     * Indicates whether a cell has a black hole to distinguish two kinds of cell.
+     * Indicates whether a cell has a black hole to distinguish two kinds of cells.
      * Class inheritance and interfaces skipped here as cells with black holes are the same cells,
-     * however should be distinguished. Do not see any reasons to oversaturate this class with inheritance
+     * however should be distinguished. Do not see any reason to oversaturate this class with inheritance.
      *
      * @var bool $hasBlackHole
      */

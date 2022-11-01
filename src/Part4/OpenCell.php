@@ -6,6 +6,10 @@ namespace Proxx\Part4;
 
 use Proxx\Part1\State;
 
+/**
+ * If a cell is opened we will check all adjacent cells.
+ * Then open recursively each one with 0 adjacent black holes.
+ */
 class OpenCell {
 
     private State $state;

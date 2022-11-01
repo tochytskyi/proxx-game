@@ -9,8 +9,8 @@ use Proxx\Part1\Cell;
 use Proxx\Part1\State;
 
 /**
- * random_int used to randomize black holes position.
- * There is also deduplication for settings black holes to the same cell
+ * Default php function `random_int` used to randomize black holes position.
+ * Deduplication applied on setting black holes to the same cell.
  */
 class InitCellsWithBlackHoles {
 

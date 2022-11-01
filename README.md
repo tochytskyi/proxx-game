@@ -4,12 +4,12 @@ Try original game [here](https://proxx.app/) and find rules
 # Run
 ## Init composer to get dependencies
 
-Create auth.json
+Create `auth.json`
 ```shell
 cp ./auth.example.json ./auth.json
 ```
 
-Add [github token](https://github.com/settings/tokens)
+Add [github token](https://github.com/settings/tokens) instead of `ghp_***`
 ```json
 {
     "github-oauth": {
@@ -24,7 +24,7 @@ Add [github token](https://github.com/settings/tokens)
 docker-compose up -d
 ```
 Default cmd for the container will run unit tests from `./tests` folder that covers all domain logic.
-Check container's log then.
+Check container's logs then.
 
 ```shell
 docker-compose logs app
