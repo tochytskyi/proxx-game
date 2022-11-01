@@ -7,6 +7,20 @@ namespace Proxx\Part1;
 use InvalidArgumentException;
 use OutOfRangeException;
 
+/**
+ * Class that represents game's state:
+ *
+ * - board: 2-dimensional array where each value is instance if Cell class. @see Cell
+ *   Cell class is convenient to represent each cell state and quickly get any item by O(1)
+ *
+ * - width & height: represent size of the board
+ *
+ * - withBlackHolesCoordinates: auxiliary lightweight array where keys templated like "x:y"
+ *   to quickly track all cells with black holes by O(1) if we know X and Y
+ *
+ * - openedCoordinates: auxiliary lightweight array to quickly track all opened cells by O(1).
+ *   can be used to check if the game is finished
+ */
 class State {
 
     public const MIN_X = 5;
@@ -31,7 +45,7 @@ class State {
     /**
      * @var array<string,int[]>
      */
-    private array $withoutBlackHolesCoordinates = [];
+    private array $openedCoordinates = [];
 
     public function __construct(int $width, int $height)
     {
@@ -44,7 +58,6 @@ class State {
         foreach (range(0, $width - 1) as $x) {
             foreach (range(0, $height - 1) as $y) {
                 $this->board[$x][$y] = new Cell(false);
-                $this->withoutBlackHolesCoordinates["{$x}:{$y}"] = [$x, $y];
             }
         }
     }
@@ -76,10 +89,27 @@ class State {
 
         if ($cell->hasBlackHole()) {
             $this->withBlackHolesCoordinates["{$x}:{$y}"] = [$x, $y];
-            unset($this->withoutBlackHolesCoordinates["{$x}:{$y}"]);
         } else {
-            $this->withoutBlackHolesCoordinates["{$x}:{$y}"] = [$x, $y];
             unset($this->withBlackHolesCoordinates["{$x}:{$y}"]);
+        }
+
+        if ($cell->isOpened()) {
+            $this->openedCoordinates["{$x}:{$y}"] = [$x, $y];
+        } else {
+            unset($this->openedCoordinates["{$x}:{$y}"]);
+        }
+    }
+
+    public function refresh(): void
+    {
+        $this->board = [];
+        $this->withBlackHolesCoordinates = [];
+        $this->openedCoordinates = [];
+
+        foreach (range(0, $this->width - 1) as $x) {
+            foreach (range(0, $this->height - 1) as $y) {
+                $this->board[$x][$y] = new Cell(false);
+            }
         }
     }
 
@@ -88,17 +118,17 @@ class State {
         return $this->withBlackHolesCoordinates;
     }
 
-    public function getWithoutBlackHolesCoordinates(): array
-    {
-        return $this->withoutBlackHolesCoordinates;
-    }
-
     public function isCellWithBlackHole(int $x, int $y): bool
     {
         $this->checkX($x);
         $this->checkY($y);
 
         return isset($this->withBlackHolesCoordinates["{$x}:{$y}"]);
+    }
+
+    public function isFinished(): bool
+    {
+        return count($this->openedCoordinates)=== ($this->width * $this->height - count($this->withBlackHolesCoordinates));
     }
 
     private function checkWidth(int $value): void

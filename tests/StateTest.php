@@ -32,20 +32,6 @@ class StateTest extends TestCase
         $this->assertEquals(11, $state->getHeight());
     }
 
-    public function testDefaultCellsState(): void
-    {
-        $state = new State(5, 5);
-
-        foreach (range(0, 4) as $x) {
-            foreach (range(0, 4) as $y) {
-                $this->assertInstanceOf(Cell::class, $state->getCell($x, $y));
-                $this->assertFalse($state->getCell($x, $y)->hasBlackHole());
-                $this->assertFalse($state->getCell($x, $y)->isOpened());
-                $this->assertEquals(0, $state->getCell($x, $y)->getAdjacentBlackHolesCount());
-            }
-        }
-    }
-
     public function testGetCellWithIncorrectX(): void
     {
         $state = new State(7, 7);
@@ -74,7 +60,23 @@ class StateTest extends TestCase
         $state->setCell(6, 7, new Cell());
     }
 
-    public function testSuccessInitWithoutBlackHoles(): void
+    public function testDefaultStateCells(): void
+    {
+        $state = new State(5, 5);
+
+        foreach (range(0, 4) as $x) {
+            foreach (range(0, 4) as $y) {
+                $this->assertInstanceOf(Cell::class, $state->getCell($x, $y));
+                $this->assertFalse($state->getCell($x, $y)->hasBlackHole());
+                $this->assertFalse($state->getCell($x, $y)->isOpened());
+                $this->assertEquals(0, $state->getCell($x, $y)->getAdjacentBlackHolesCount());
+            }
+        }
+
+        //$this->assertFalse($state->isFinished());
+    }
+
+    public function testDefaultStateWithoutBlackHoles(): void
     {
         $state = new State(6, 7);
 
@@ -87,5 +89,6 @@ class StateTest extends TestCase
         }
 
         $this->assertEquals(0, $cellsWithBlackHoleCount);
+        $this->assertCount(0, $state->getWithBlackHolesCoordinates());
     }
 }

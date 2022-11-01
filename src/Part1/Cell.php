@@ -6,10 +6,27 @@ namespace Proxx\Part1;
 
 class Cell {
 
+    /**
+     * Cell is closed or opened
+     *
+     * @var bool $opened
+     */
     private bool $opened = false;
 
+    /**
+     * Counts all adjacent cells with black holes
+     *
+     * @var int $adjacentBlackHolesCount
+     */
     private int $adjacentBlackHolesCount = 0;
 
+    /**
+     * Indicates whether a cell has a black hole to distinguish two kinds of cell.
+     * Class inheritance and interfaces skipped here as cells with black holes are the same cells,
+     * however should be distinguished. Do not see any reasons to oversaturate this class with inheritance
+     *
+     * @var bool $hasBlackHole
+     */
     private bool $hasBlackHole;
 
     public function __construct(bool $hasBlackHole = false)

@@ -18,6 +18,11 @@ class OpenCell {
     public function open(int $x, int $y): void
     {
         $cell = $this->state->getCell($x, $y);
+
+        if ($cell->isOpened()) {
+            return;
+        }
+
         $cell->open();
         $this->state->setCell($x, $y, $cell);
 
@@ -42,14 +47,14 @@ class OpenCell {
 
                 $adjacentCell = $this->state->getCell($adjacentX, $adjacentY);
 
+                //continue open cells that have 0 adjacent cells with black holes
+                if (!$adjacentCell->isOpened() && !$adjacentCell->hasBlackHole() && $adjacentCell->getAdjacentBlackHolesCount() === 0) {
+                    $this->open($adjacentX, $adjacentY);
+                }
+
                 if (!$adjacentCell->isOpened() && !$adjacentCell->hasBlackHole()) {
                     $adjacentCell->open();
                     $this->state->setCell($adjacentX, $adjacentY, $adjacentCell);
-                }
-
-                //continue open cells
-                if (!$adjacentCell->isOpened() && !$adjacentCell->hasBlackHole() && $adjacentCell->getAdjacentBlackHolesCount() === 0) {
-                    $this->open($adjacentX, $adjacentY);
                 }
             }
         }
