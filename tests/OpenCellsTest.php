@@ -83,6 +83,7 @@ class OpenCellsTest extends TestCase
         $state->setCell(3, 3, new Cell(true));
         (new InitEmptyCells($state))->init();
 
+        $this->assertFalse($state->isFinished());
         (new OpenCell($state))->open(2, 2);
 
         $this->assertTrue($state->getCell(4, 0)->isOpened());
@@ -107,12 +108,14 @@ class OpenCellsTest extends TestCase
         $this->assertTrue($state->getCell(1, 4)->isOpened());
         $this->assertTrue($state->getCell(2, 4)->isOpened());
 
+        $this->assertFalse($state->isFinished());
         (new OpenCell($state))->open(0, 0);
 
         $this->assertTrue($state->getCell(0, 0)->isOpened());
         $this->assertTrue($state->getCell(1, 0)->isOpened());
         $this->assertTrue($state->getCell(0, 1)->isOpened());
 
+        $this->assertFalse($state->isFinished());
         (new OpenCell($state))->open(4, 4);
 
         $this->assertTrue($state->getCell(4, 4)->isOpened());

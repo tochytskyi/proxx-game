@@ -73,7 +73,7 @@ class StateTest extends TestCase
             }
         }
 
-        //$this->assertFalse($state->isFinished());
+        $this->assertFalse($state->isFinished());
     }
 
     public function testDefaultStateWithoutBlackHoles(): void
